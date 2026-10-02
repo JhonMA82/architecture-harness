@@ -1,0 +1,31 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "default_agent": "architect",
+  "permissions": [
+    { "action": "read", "resource": "*", "effect": "allow" },
+    { "action": "glob", "resource": "*", "effect": "allow" },
+    { "action": "grep", "resource": "*", "effect": "allow" },
+    { "action": "webfetch", "resource": "*", "effect": "allow" },
+    { "action": "websearch", "resource": "*", "effect": "allow" },
+    { "action": "skill", "resource": "*", "effect": "deny" },
+    { "action": "skill", "resource": "project-assessment", "effect": "allow" },
+    { "action": "skill", "resource": "architecture-design", "effect": "allow" },
+    { "action": "skill", "resource": "safe-refactoring", "effect": "allow" },
+    { "action": "skill", "resource": "architecture-handoff", "effect": "allow" },
+    { "action": "subagent", "resource": "*", "effect": "deny" },
+    { "action": "shell", "resource": "*", "effect": "ask" },
+    { "action": "shell", "resource": "rg *", "effect": "allow" },
+    { "action": "shell", "resource": "python scripts/inspect_project.py *", "effect": "allow" },
+    { "action": "shell", "resource": "python3 scripts/inspect_project.py *", "effect": "allow" },
+    { "action": "shell", "resource": "python scripts/check_architecture.py *", "effect": "allow" },
+    { "action": "shell", "resource": "python3 scripts/check_architecture.py *", "effect": "allow" },
+    { "action": "shell", "resource": "python -m unittest *", "effect": "allow" },
+    { "action": "shell", "resource": "python3 -m unittest *", "effect": "allow" },
+    { "action": "edit", "resource": "*", "effect": "deny" },
+    { "action": "edit", "resource": ".work/*", "effect": "allow" },
+    { "action": "edit", "resource": "output/*", "effect": "allow" },
+    { "action": "edit", "resource": "*/ARCHITECTURE.md", "effect": "allow" },
+    { "action": "edit", "resource": "*/.architecture/*", "effect": "allow" },
+    { "action": "external_directory", "resource": "*", "effect": "allow" }
+  ]
+}

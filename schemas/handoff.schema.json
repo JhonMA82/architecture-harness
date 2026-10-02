@@ -1,0 +1,303 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://architecture-harness.local/schemas/handoff.schema.json",
+  "title": "Architecture Harness Handoff",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "architecture_revision",
+    "project",
+    "architecture",
+    "boundaries",
+    "verification",
+    "completion",
+    "work_ledger"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "architecture_revision": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "project": {
+      "type": "object",
+      "required": [
+        "name",
+        "archetype"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "archetype": {
+          "type": "string",
+          "minLength": 1
+        },
+        "framework": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "stack": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "uniqueItems": true
+        },
+        "source": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "additionalProperties": true
+    },
+    "architecture": {
+      "type": "object",
+      "required": [
+        "pattern",
+        "organization"
+      ],
+      "properties": {
+        "current": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "pattern": {
+          "type": "string",
+          "minLength": 1
+        },
+        "organization": {
+          "type": "string",
+          "minLength": 1
+        },
+        "intervention": {
+          "enum": [
+            "KEEP",
+            "ORGANIZE",
+            "RESTRUCTURE",
+            null
+          ]
+        },
+        "migration_strategy": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "behavior_change_allowed": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": true
+    },
+    "preserve": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "change": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "non_goals": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "structure": {
+      "type": "object",
+      "properties": {
+        "description": {
+          "type": "string"
+        },
+        "tree": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": true
+    },
+    "ownership": {
+      "type": "object",
+      "description": "Final owner path/module for important user-facing capabilities or workflows. Omit shared infrastructure that does not benefit from feature ownership.",
+      "additionalProperties": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "boundaries": {
+      "type": "object",
+      "required": [
+        "rules"
+      ],
+      "properties": {
+        "rules": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "rule"
+            ],
+            "properties": {
+              "rule": {
+                "type": "string",
+                "minLength": 1
+              },
+              "enforcement": {
+                "enum": [
+                  "mechanical",
+                  "documented"
+                ]
+              }
+            },
+            "additionalProperties": true
+          }
+        }
+      },
+      "additionalProperties": true
+    },
+    "verification": {
+      "type": "object",
+      "required": [
+        "commands"
+      ],
+      "properties": {
+        "commands": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "architecture_checks": {
+          "type": "array",
+          "items": {
+            "oneOf": [
+              {
+                "type": "object",
+                "required": [
+                  "type",
+                  "path"
+                ],
+                "properties": {
+                  "type": {
+                    "const": "require_path"
+                  },
+                  "path": {
+                    "type": "string"
+                  },
+                  "phase": {
+                    "enum": [
+                      "current",
+                      "completion"
+                    ]
+                  }
+                },
+                "additionalProperties": false
+              },
+              {
+                "type": "object",
+                "required": [
+                  "type",
+                  "path"
+                ],
+                "properties": {
+                  "type": {
+                    "const": "forbid_path"
+                  },
+                  "path": {
+                    "type": "string"
+                  },
+                  "phase": {
+                    "enum": [
+                      "current",
+                      "completion"
+                    ]
+                  }
+                },
+                "additionalProperties": false
+              },
+              {
+                "type": "object",
+                "required": [
+                  "type",
+                  "source_glob",
+                  "forbidden_prefixes"
+                ],
+                "properties": {
+                  "type": {
+                    "const": "forbid_python_import"
+                  },
+                  "source_glob": {
+                    "type": "string"
+                  },
+                  "forbidden_prefixes": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "minItems": 1
+                  },
+                  "phase": {
+                    "enum": [
+                      "current",
+                      "completion"
+                    ]
+                  }
+                },
+                "additionalProperties": false
+              }
+            ]
+          }
+        }
+      },
+      "additionalProperties": true
+    },
+    "completion": {
+      "type": "object",
+      "required": [
+        "criteria"
+      ],
+      "properties": {
+        "criteria": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1
+        }
+      },
+      "additionalProperties": true
+    },
+    "work_ledger": {
+      "type": "object",
+      "required": [
+        "policy"
+      ],
+      "properties": {
+        "policy": {
+          "const": "decompose_do_not_reinterpret"
+        },
+        "checkpoint_after_each_work_unit": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": true
+}
